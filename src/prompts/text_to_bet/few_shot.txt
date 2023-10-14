@@ -1,0 +1,6 @@
+Here are a few unrelated examples of events markets, sides, and odds
+Event: ['Arsenal vs Chelsea', 'McGregor - Diaz', 'Leinster v La Rochelle']
+Market: ['Match Odds', 'Total Goals', 'Tottenham Over/Under 2.5 Goals', 'Winner']
+Side: ['Arsenal', 'Over', 'Tottenham Over 2.5 Goals', 'Under 1.5 Goals']
+Odds:['10/1', Evens, '11/10', '5.0', '+110', '-1100']
+Extra:['Draw No Bet', 'DNB']

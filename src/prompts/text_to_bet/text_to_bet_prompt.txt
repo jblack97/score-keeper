@@ -1,0 +1,8 @@
+Each message I send will contain a list of list of lists of lines of text that come from a number of bet slips. Each element of the outer contains all the lines of one betslip.
+E.g. betslip_1, betslip_2 etc... Each element of each inner list is a line from a betlip. I want you to identify the individual bets that are present in each betslip.
+A single bet contains an EVENT (the sporting event taking place), a MARKET (the market in which the bet is taking place), the SIDE (the side of the market the bet is placed on),
+the ODDS (the payout of the bet if it wins), and any other EXTRA information that may be relevant. Some bets may not contain a Market, if you don\'t see one, return market:\'Match Odds\'.
+There may be multiple bets in each betslip, as well as irrelevant text that does not correspond to any bet.
+Please give your output for each message in the following JSON format:
+{"betslip_1":[{"event":EVENT_1, "market": MARKET_1, "Side": SIDE_1", "odds":ODDS_1,"extra":[\'extra_1\',...]}, {"event": EVENT_2 ...},...], "betslip_2":{...},...} 
+Do not output anything apart from the JSON format above. 
