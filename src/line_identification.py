@@ -1,9 +1,6 @@
-import sys
 import cv2
-import os
 import numpy as np
 import pandas as pd
-import argparse
 from sklearn.cluster import DBSCAN
 
 
@@ -22,6 +19,7 @@ def show_contours(image, contours, colours):
         )
         cv2.imshow("image", rect)
         cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
 def collect_contour_info(contours):
@@ -79,6 +77,11 @@ def cut_out_lines(img, lines):
     return line_images
 
 
+def crop(img):
+    non_zero_0, non_zero_1 = np.nonzero(img)
+    return img[min(non_zero_0) : max(non_zero_0), min(non_zero_1) : max(non_zero_1)]
+
+
 def identify_lines(image_path):
     """
     Identifies lines of text in betslip by first identifying rectangular contours around pieces
@@ -86,11 +89,17 @@ def identify_lines(image_path):
     Saves individual line images to a subdirectory of the image.
     """
     img = cv2.imread(image_path)
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    _, threshold = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV)
+    grey = crop(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY))
+    # for cv2.findContours to work, need text to be white on black background
+    if np.average(grey) > 128:
+        threshold_type = cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV
+    else:
+        threshold_type = cv2.THRESH_OTSU
+
+    _, threshold = cv2.threshold(grey, 0, 255, threshold_type)
     contours, _ = cv2.findContours(threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     df = collect_contour_info(contours)
     lines = cluster_contours(df)
-    line_images = cut_out_lines(img, lines)
+    line_images = cut_out_lines(grey, lines)
 
     return line_images

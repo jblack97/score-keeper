@@ -5,9 +5,13 @@ from PIL import Image
 
 
 def apply_tess(line_dir):
+    # line images have filename 'line_{line_number}.jpg', sort on line_number
+    line_filenames = sorted(
+        os.listdir(line_dir), key=lambda x: int(x.split("_")[1].split(".")[0])
+    )
     line_images = [
-        Image.open(f"{line_dir}/{line_path}").convert("RGB")
-        for line_path in os.listdir(line_dir)
+        Image.open(f"{line_dir}/{line_filename}").convert("RGB")
+        for line_filename in line_filenames
     ]
     image_text = []
     for line_image in line_images:
