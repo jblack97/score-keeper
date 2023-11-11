@@ -15,12 +15,12 @@ class LookUpFiller(PlaceholderFiller):
             self.values = json.loads(f.read())
 
     def fill(self):
-        return np.random.choice(self.values)
+        return np.random.choice(self.values)["value"]
 
 
 class PlayerFiller(PlaceholderFiller):
-    def __init__(self, placeholder):
-        super().__init__(placeholder)
+    def __init__(self):
+        super().__init__("PLAYER")
 
     @staticmethod
     def fill():
@@ -28,8 +28,8 @@ class PlayerFiller(PlaceholderFiller):
 
 
 class IntFiller(PlaceholderFiller):
-    def __init__(self, placeholder):
-        super().__init__(placeholder)
+    def __init__(self):
+        super().__init__("INT")
 
     @staticmethod
     def fill():
@@ -37,8 +37,8 @@ class IntFiller(PlaceholderFiller):
 
 
 class FloatFiller(PlaceholderFiller):
-    def __init__(self, placeholder):
-        super().__init__(placeholder)
+    def __init__(self):
+        super().__init__("FLOAT")
 
     @staticmethod
     def fill():
@@ -46,8 +46,25 @@ class FloatFiller(PlaceholderFiller):
 
 
 class ScorelineFiller(PlaceholderFiller):
-    def __init__(self, placeholder):
-        super().__init__(placeholder)
+    def __init__(self):
+        super().__init__("SCORELINE")
 
+    @staticmethod
     def fill():
         return f"{np.random.randint(0,8)} - {np.random.randint(0,8)}"
+
+
+class FillerMaker:
+    def generate_filler(placeholder, kind=None, lookup_dir=None):
+        if kind == "lookup":
+            return LookUpFiller(placeholder, lookup_dir=lookup_dir)
+        if placeholder == "PLAYER":
+            return PlayerFiller()
+        if placeholder == "INT":
+            return IntFiller()
+        if placeholder == "FLOAT":
+            return FloatFiller()
+        if placeholder == "SCORELINE":
+            return ScorelineFiller()
+        else:
+            raise ValueError(f"No filler implemented for : {placeholder}")
