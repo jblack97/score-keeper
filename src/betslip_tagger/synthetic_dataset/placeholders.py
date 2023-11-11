@@ -15,7 +15,7 @@ class LookUpFiller(PlaceholderFiller):
             self.values = json.loads(f.read())
 
     def fill(self):
-        return np.random.choice(self.values)["value"]
+        return np.random.choice(self.values)
 
 
 class PlayerFiller(PlaceholderFiller):
@@ -51,12 +51,12 @@ class ScorelineFiller(PlaceholderFiller):
 
     @staticmethod
     def fill():
-        return f"{np.random.randint(0,8)} - {np.random.randint(0,8)}"
+        return f"{np.random.randint(0,8)}-{np.random.randint(0,8)}"
 
 
 class FillerMaker:
-    def generate_filler(placeholder, kind=None, lookup_dir=None):
-        if kind == "lookup":
+    def generate_filler(placeholder, fill_by=None, lookup_dir=None):
+        if fill_by == "lookup":
             return LookUpFiller(placeholder, lookup_dir=lookup_dir)
         if placeholder == "PLAYER":
             return PlayerFiller()

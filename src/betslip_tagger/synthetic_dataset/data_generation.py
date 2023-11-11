@@ -27,7 +27,6 @@ class BetMaker:
             "market", self.templates["market"][self.templates["market"]["event_id"] == bet["event"]["id"]]
         )
         # one valid side template for a given market
-        # side_id = self.templates["market"][self.templates["market"]["market"] == bet["market"]["value"]]["side_id"]
         side_id = bet["market"]["side_id"]
         bet["side"] = self.make_component("side", self.templates["side"][self.templates["side"]["id"] == side_id])
         bet["odds"] = self.make_component("odds", self.templates["odds"])
