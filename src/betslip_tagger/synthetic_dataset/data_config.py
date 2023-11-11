@@ -10,6 +10,8 @@ class DataConfig(BaseSettings):
         "INT": {"fill_by": "generate"},
         "FLOAT": {"fill_by": "generate"},
         "SCORELINE": {"fill_by": "generate"},
+        "OVER_UNDER": {"fill_by": "lookup"},
+        "BOOLEAN": {"fill_by": "lookup"},
         # "COMPETITION": {"fill_by": 'lookup'},
         # "SPONSOR": {"fill_by": "generate"},
     }
