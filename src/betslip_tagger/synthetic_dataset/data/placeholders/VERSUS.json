@@ -1,10 +1,20 @@
-{
-    "VERSUS": [
-        "versus",
-        "vs",
-        "v",
-        "-",
-        "at",
-        "against"
-    ]
-}
+[
+    {
+        "value": "versus"
+    },
+    {
+        "value": "vs"
+    },
+    {
+        "value": "v"
+    },
+    {
+        "value": "-"
+    },
+    {
+        "value": "at"
+    },
+    {
+        "value": "against"
+    }
+]
