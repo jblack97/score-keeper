@@ -12,6 +12,8 @@ class DataConfig(BaseSettings):
         "SCORELINE": {"fill_by": "generate"},
         "OVER_UNDER": {"fill_by": "lookup"},
         "BOOLEAN": {"fill_by": "lookup"},
+        "FRACTION": {"fill_by": "generate"},
+        "PLUS_MINUS": {"fill_by": "generate"},
         # "COMPETITION": {"fill_by": 'lookup'},
         # "SPONSOR": {"fill_by": "generate"},
     }

@@ -1,5 +1,4 @@
 id,template
-0,INT / INT
+0,FRACTION
 1,FLOAT
-2,+ INT
-3,- INT
+2,PLUS_MINUS
