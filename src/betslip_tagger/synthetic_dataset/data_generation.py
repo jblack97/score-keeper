@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from src.betslip_tagger.synthetic_dataset.NER_data import NERWord, label_entity
 
 
 class BetMaker:
@@ -7,15 +8,28 @@ class BetMaker:
         self.templates = templates
         self.fillers = fillers
 
-    def make_component(self, name, templates: pd.DataFrame):
+    def make_component(self, name: str, templates: pd.DataFrame):
+        """
+        Makes a single component of a bet in NER dataset format.
+        """
+        component_words = []
         ind = np.random.randint(0, len(templates))
         res = dict(templates.iloc[ind].copy(deep=True))
         res["name"] = name
         template = res.pop("template").split()
         for ind, word in enumerate(template):
-            if word in self.fillers:
-                template[ind] = self.fillers[word].fill()
-        res["value"] = template
+            if word in self.fillers.keys():
+                entity = self.fillers[word].fill()
+                entity_words = [NERWord(value=word) for word in entity.split()]
+                # add fine-grain NER labels
+                entity_words = label_entity(entity_words, word)
+            else:
+                entity_words = [NERWord(value=word)]
+            component_words.extend(entity_words)
+        # add coarse-grain NER labels
+        component_words = label_entity(component_words, name)
+        res["words"] = component_words
+        res["text"] = " ".join([ner_word.value for ner_word in component_words])
 
         return res
 

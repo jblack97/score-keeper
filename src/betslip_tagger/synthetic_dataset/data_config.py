@@ -17,6 +17,31 @@ class DataConfig(BaseSettings):
         # "COMPETITION": {"fill_by": 'lookup'},
         # "SPONSOR": {"fill_by": "generate"},
     }
+    coarse_ner_labels: list = [
+        "O",
+        "B-EVENT",
+        "I-EVENT",
+        "B-MARKET",
+        "I-MARKET",
+        "B-SIDE",
+        "I-SIDE",
+        "B-ODDS",
+        "I-ODDS",
+    ]
+    fine_ner_labels: list = [
+        "B-VERSUS",
+        "I-VERSUS",
+        "B-TEAM",
+        "I-TEAM",
+        "B-PLAYER",
+        "I-PLAYER",
+        "B-SCORELINE",
+        "I-SCORELINE",
+        "B-BOOLEAN",
+        "I-BOOLEAN",
+        "B-PLUS_MINUS",
+        "I-PLUS_MINUS",
+    ]
 
 
 data_config = DataConfig()
