@@ -51,15 +51,13 @@ class BetMaker:
 
     def make_bet(self):
         bet = {}
-        bet["event"] = self.make_component("event", self.templates["event"])
+        bet["event"] = self.make_component("EVENT", self.templates["event"])
         fill_values = self.get_fill_values(bet["event"])
         # many valid market templates for a given event
         bet["market"] = self.make_component(
-            "market", self.templates["market"][self.templates["market"]["event_id"] == bet["event"]["id"]], fill_values
+            "MARKET", self.templates["market"][self.templates["market"]["event_id"] == bet["event"]["id"]], fill_values
         )
         # one valid side template for a given market
         side_id = bet["market"]["side_id"]
-        bet["side"] = self.make_component("side", self.templates["side"][self.templates["side"]["id"] == side_id], fill_values)
-        bet["odds"] = self.make_component("odds", self.templates["odds"], fill_values)
-
-        return bet
+        bet["side"] = self.make_component("SIDE", self.templates["side"][self.templates["side"]["id"] == side_id], fill_values)
+        bet["odds"] = self.make_component("ODDS", self.templates["odds"], fill_values)
