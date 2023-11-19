@@ -6,9 +6,9 @@ import argparse
 import cv2
 import json
 from pathlib import Path
-from line_identification import identify_lines
-from text_recognition import apply_tess
-from text_to_bet import gpt_text_to_bet
+from src.betslip_reader.line_identification import identify_lines
+from src.betslip_reader.text_recognition import apply_tess
+from src.bet_identification.text_to_bet import gpt_text_to_bet
 
 ROOT = Path(__file__).parent.parent
 

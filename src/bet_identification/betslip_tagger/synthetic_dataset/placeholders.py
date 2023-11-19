@@ -7,6 +7,9 @@ class PlaceholderFiller:
     def __init__(self, placeholder):
         self.placeholder = placeholder
 
+    def override_fill(self, values):
+        return np.random.choice(values)
+
 
 class LookUpFiller(PlaceholderFiller):
     def __init__(self, placeholder, lookup_dir):
@@ -14,8 +17,16 @@ class LookUpFiller(PlaceholderFiller):
         with open(f"{lookup_dir}/{placeholder}.json", "r") as f:
             self.values = json.loads(f.read())
 
-    def fill(self):
-        return np.random.choice(self.values)["value"]
+    def fill(self, value_subset=None):
+        """
+        Returns random value from list of values.
+        Args:
+            value_subset: subset of values to choose from
+        """
+        values = self.values
+        if value_subset is not None:
+            values = value_subset
+        return np.random.choice(values)["value"]
 
 
 class PlayerFiller(PlaceholderFiller):
