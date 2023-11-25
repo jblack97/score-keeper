@@ -8,7 +8,7 @@ Any image containing the information from a betslip e.g. \
 <img src="https://github.com/jblack97/score-keeper/blob/main/betslip.jpg" width="500" height="750" >
 
 # Betslip Scanning (Computer Vision)
-We then use opencv's contour recognition tool to recognize text in the image. We need to extract the text line-by-line in order to get the most accurate results from our text recognition tool. To identify the lines of text, I used DBScan Clustering. The results of this are displayed below, where each colour represents a cluster of contours. By taking the min and max height values of each cluster, we can extract individual jpeg's for each line, and feed them into our text recognition tool.
+We then use opencv's contour recognition tool to recognize text in the image. We need to extract the text line-by-line in order to get the most accurate results from our text recognition tool. To identify the lines of text, I used DBScan Clustering. The results of this are displayed below, where each colour represents a cluster of contours. By taking the min and max height values of each cluster, we can extract individual jpeg's for each line, and feed them into our text recognition tool. \
  <img src="https://github.com/jblack97/score-keeper/blob/main/clustered_contours_betslip.jpg" width="500" height="750" > \
 Pytesseract then does a great job of reading the words into our pipeline.
 
