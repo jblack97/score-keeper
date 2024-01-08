@@ -14,6 +14,8 @@ class DataConfig(BaseSettings):
         "BOOLEAN": {"fill_by": "lookup"},
         "FRACTION": {"fill_by": "generate"},
         "PLUS_MINUS": {"fill_by": "generate"},
+        "DATE": {"fill_by": "generate"},
+        "WORD": {"fill_by": "lookup"},
         # "COMPETITION": {"fill_by": 'lookup'},
         # "SPONSOR": {"fill_by": "generate"},
     }
