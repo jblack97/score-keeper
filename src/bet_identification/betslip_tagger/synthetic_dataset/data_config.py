@@ -43,6 +43,10 @@ class DataConfig(BaseSettings):
         "I-BOOLEAN",
         "B-PLUS_MINUS",
         "I-PLUS_MINUS",
+        "B-DATE",
+        "I-DATE",
+        "B-WORD",
+        "I-WORD",
     ]
 
 
