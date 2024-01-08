@@ -1,6 +1,7 @@
 import json
 import numpy as np
 import names
+import datetime
 
 
 class PlaceholderFiller:
@@ -102,6 +103,22 @@ class PlusMinusFiller(PlaceholderFiller):
         return f"{sign}{np.random.randint(1, 100)*100}"
 
 
+class DateFiller(PlaceholderFiller):
+    def __init__(self):
+        super().__init__("DATE")
+
+    @staticmethod
+    def fill():
+        date_formats = ["%Y-%m-%d", "%m/%d/%Y", "%d-%m-%Y", "%Y/%m/%d", "%m-%d-%Y"]
+        random_format = np.random.choice(date_formats)
+        start_date = datetime(1900, 1, 1)
+        end_date = datetime(2025, 12, 31)
+        random_date = start_date + np.random.random() * (end_date - start_date)
+        formatted_date = random_date.strftime(random_format)
+
+        return formatted_date
+
+
 class FillerMaker:
     def generate_filler(placeholder, kind=None, lookup_dir=None):
         if kind == "lookup":
@@ -118,5 +135,7 @@ class FillerMaker:
             return FractionFiller()
         if placeholder == "PLUS_MINUS":
             return PlusMinusFiller()
+        if placeholder == "DATE":
+            return DateFiller()
         else:
             raise ValueError(f"No filler implemented for : {placeholder}")

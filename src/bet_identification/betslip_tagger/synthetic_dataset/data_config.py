@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings
 
 
 class DataConfig(BaseSettings):
-    bet_components: list = ["event", "market", "side", "odds"]
+    bet_components: list = ["event", "market", "side", "odds", "noise"]
     placeholders: dict = {
         "VERSUS": {"fill_by": "lookup"},
         "TEAM": {"fill_by": "lookup"},
@@ -15,7 +15,7 @@ class DataConfig(BaseSettings):
         "FRACTION": {"fill_by": "generate"},
         "PLUS_MINUS": {"fill_by": "generate"},
         "DATE": {"fill_by": "generate"},
-        "WORD": {"fill_by": "lookup"},
+        "RANDOM_WORD": {"fill_by": "lookup"},
         # "COMPETITION": {"fill_by": 'lookup'},
         # "SPONSOR": {"fill_by": "generate"},
     }
@@ -45,8 +45,6 @@ class DataConfig(BaseSettings):
         "I-PLUS_MINUS",
         "B-DATE",
         "I-DATE",
-        "B-WORD",
-        "I-WORD",
     ]
 
 
