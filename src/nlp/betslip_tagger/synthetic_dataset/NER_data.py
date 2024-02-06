@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import Optional
 
+from data_config import data_config
+
 
 @dataclass
 class NERWord:
@@ -10,11 +12,20 @@ class NERWord:
     def add_label(self, label: str):
         if self._labels is None:
             self._labels = {}
-        self._labels[label] = 1
+        self._labels[data_config.ner_labels[label]["type"]] = label
 
     @property
     def labels(self):
         return self._labels
+
+    @staticmethod
+    def get_label_type(label):
+        if label in data_config.coarse_ner_labels:
+            return "coarse"
+        if label in data_config.fine_ner_labels:
+            return "fine"
+
+        raise ValueError(f"Unknown label {label}")
 
 
 def label_entity(entity: list[NERWord], entity_type: str) -> list[NERWord]:
@@ -23,10 +34,14 @@ def label_entity(entity: list[NERWord], entity_type: str) -> list[NERWord]:
 
     """
     for ind, word in enumerate(entity):
-        if ind == 0:
-            word.add_label(f"B-{entity_type}")
+        if f"B-{entity_type}" not in data_config.ner_labels:
+            label = "O"
+        elif ind == 0:
+            label = f"B-{entity_type}"
         else:
-            word.add_label(f"I-{entity_type}")
+            label = f"I-{entity_type}"
+
+        word.add_label(label)
 
     return entity
 

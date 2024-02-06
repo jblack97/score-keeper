@@ -19,33 +19,32 @@ class DataConfig(BaseSettings):
         # "COMPETITION": {"fill_by": 'lookup'},
         # "SPONSOR": {"fill_by": "generate"},
     }
-    coarse_ner_labels: list = [
-        "O",
-        "B-EVENT",
-        "I-EVENT",
-        "B-MARKET",
-        "I-MARKET",
-        "B-SIDE",
-        "I-SIDE",
-        "B-ODDS",
-        "I-ODDS",
-    ]
-    fine_ner_labels: list = [
-        "B-VERSUS",
-        "I-VERSUS",
-        "B-TEAM",
-        "I-TEAM",
-        "B-PLAYER",
-        "I-PLAYER",
-        "B-SCORELINE",
-        "I-SCORELINE",
-        "B-BOOLEAN",
-        "I-BOOLEAN",
-        "B-PLUS_MINUS",
-        "I-PLUS_MINUS",
-        "B-DATE",
-        "I-DATE",
-    ]
+
+    ner_labels: dict = {
+        "O": {"type": "coarse"},
+        "B-EVENT": {"type": "coarse"},
+        "I-EVENT": {"type": "coarse"},
+        "B-MARKET": {"type": "coarse"},
+        "I-MARKET": {"type": "coarse"},
+        "B-SIDE": {"type": "coarse"},
+        "I-SIDE": {"type": "coarse"},
+        "B-ODDS": {"type": "coarse"},
+        "I-ODDS": {"type": "coarse"},
+        "B-VERSUS": {"type": "fine"},
+        "I-VERSUS": {"type": "fine"},
+        "B-TEAM": {"type": "fine"},
+        "I-TEAM": {"type": "fine"},
+        "B-PLAYER": {"type": "fine"},
+        "I-PLAYER": {"type": "fine"},
+        "B-SCORELINE": {"type": "fine"},
+        "I-SCORELINE": {"type": "fine"},
+        "B-BOOLEAN": {"type": "fine"},
+        "I-BOOLEAN": {"type": "fine"},
+        "B-PLUS_MINUS": {"type": "fine"},
+        "I-PLUS_MINUS": {"type": "fine"},
+        "B-DATE": {"type": "fine"},
+        "I-DATE": {"type": "fine"},
+    }
 
 
 data_config = DataConfig()

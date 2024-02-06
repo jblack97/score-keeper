@@ -32,7 +32,6 @@ class BetMaker:
         template = res.pop("template")
         res["name"] = name
         component_words = self.template_to_ner(template, fill_values)
-        # add coarse-grain NER labels
         component_words = label_entity(component_words, name)
         res["words"] = component_words
         res["text"] = " ".join([ner_word.value for ner_word in component_words])
@@ -61,3 +60,5 @@ class BetMaker:
         side_id = bet["market"]["side_id"]
         bet["side"] = self.make_component("SIDE", self.templates["side"][self.templates["side"]["id"] == side_id], fill_values)
         bet["odds"] = self.make_component("ODDS", self.templates["odds"], fill_values)
+
+        return bet
