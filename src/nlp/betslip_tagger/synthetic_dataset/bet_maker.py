@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from .NER_data import NERWord, label_entity, ner_words_to_entities
+from NER_data import NERWord, label_entity, ner_words_to_entities
 
 
 class BetMaker:
@@ -26,6 +26,11 @@ class BetMaker:
         return component_words
 
     def make_component(self, name, templates: pd.DataFrame, fill_values: dict = None):
+        """
+        Creates a bet 'component' (event, market, side, odds). Components are made by filling
+        'fill values' into 'templates'.
+        e.g.
+        """
         if fill_values is None:
             fill_values = {}
         res = dict(templates.iloc[np.random.randint(0, len(templates))].copy(deep=True))

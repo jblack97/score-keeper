@@ -1,9 +1,9 @@
 import numpy as np
 
-from data_generation import BetMaker
+from bet_maker import BetMaker
 
 
-class SyntheticBetslipGenerator:
+class SyntheticBetslipMaker:
     def __init__(self, bet_maker: BetMaker) -> None:
         self.bet_maker = bet_maker
 

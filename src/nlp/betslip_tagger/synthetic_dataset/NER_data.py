@@ -56,7 +56,7 @@ def ner_words_to_entities(words: list[NERWord]) -> dict:
         indices_to_close = []
         # check if open entities are continued in the next word
         for ind, entity in enumerate(open_entities):
-            if f"I-{entity['name']}" in word.labels:
+            if f"I-{entity['name']}" in [word.labels[key] for key in word.labels]:
                 entity["text"].append(word.value)
             else:
                 indices_to_close.append(ind)
@@ -64,7 +64,7 @@ def ner_words_to_entities(words: list[NERWord]) -> dict:
         # close entities
         for ind in indices_to_close:
             open_entities.pop(ind)
-        for label in word.labels:
+        for _, label in word.labels.items():
             if label.startswith("B-"):
                 entity = {"name": label[2:], "text": [word.value]}
                 open_entities.append(entity)

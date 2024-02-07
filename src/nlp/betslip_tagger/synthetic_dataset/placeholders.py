@@ -1,7 +1,7 @@
 import json
 import numpy as np
 import names
-import datetime
+from datetime import datetime
 
 
 class PlaceholderFiller:
