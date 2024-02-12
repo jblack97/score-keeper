@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional
 
 from data_config import data_config
@@ -7,11 +7,9 @@ from data_config import data_config
 @dataclass
 class NERWord:
     value: str
-    _labels: Optional[dict] = None
+    _labels: Optional[dict] = field(default_factory=lambda: {"coarse": "O", "fine": "O"})
 
     def add_label(self, label: str):
-        if self._labels is None:
-            self._labels = {}
         self._labels[data_config.ner_labels[label]["type"]] = label
 
     @property
@@ -50,6 +48,8 @@ def ner_words_to_entities(words: list[NERWord]) -> dict:
     """
     Converts a list of NERWords to a list of entities.
     """
+    # TODO sort out the naming/definitions of entities, nerwords, components, etc.  this is confusing af
+    # Note: Is this necessary? Can we just have NERWords span entire entities? (Problem with coarse vs fine. )
     entities = []
     open_entities = []
     for word in words:

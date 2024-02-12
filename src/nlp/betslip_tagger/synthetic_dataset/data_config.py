@@ -21,7 +21,8 @@ class DataConfig(BaseSettings):
     }
 
     ner_labels: dict = {
-        "O": {"type": "coarse"},
+        "O": {"type": "default"},
+        "PAD": {"type": "default"},
         "B-EVENT": {"type": "coarse"},
         "I-EVENT": {"type": "coarse"},
         "B-MARKET": {"type": "coarse"},
@@ -42,8 +43,8 @@ class DataConfig(BaseSettings):
         "I-BOOLEAN": {"type": "fine"},
         "B-PLUS_MINUS": {"type": "fine"},
         "I-PLUS_MINUS": {"type": "fine"},
-        "B-DATE": {"type": "fine"},
-        "I-DATE": {"type": "fine"},
+        # "B-DATE": {"type": "fine"},
+        # "I-DATE": {"type": "fine"},
     }
 
 

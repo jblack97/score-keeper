@@ -13,7 +13,7 @@ class SyntheticBetslipMaker:
         # Betslips can have irrelevant text at the top
         for _ in range(np.random.randint(0, 5)):
             line = []
-            for _ in range(np.random.randint(1, 10)):
+            for _ in range(np.random.randint(1, 3)):
                 line.append(self.bet_maker.make_component("NOISE", self.bet_maker.templates["noise"]))
             lines.append(line)
         for bet in range(num_bets):
