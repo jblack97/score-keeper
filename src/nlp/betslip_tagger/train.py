@@ -1,11 +1,13 @@
 import json
+import numpy as np
 import torch
 from sklearn.model_selection import train_test_split
-
+from sklearn.metrics import accuracy_score, f1_score
 from torch.nn.utils.rnn import pad_sequence
 from transformers import BertTokenizer
 from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
-
+from transformers import get_linear_schedule_with_warmup
+from torch.optim import AdamW
 from model import BetBERT
 from synthetic_dataset.data_config import data_config
 
@@ -79,3 +81,71 @@ if __name__ == "__main__":
     model = BetBERT.from_pretrained(
         "bert-base-cased", num_labels_coarse=len(tag2idx["coarse"]), num_labels_fine=len(tag2idx["fine"])
     )
+    param_optimizer = list(model.named_parameters())
+    no_decay = ["bias", "gamma", "beta"]
+    optimizer_grouped_parameters = [
+        {"params": [p for n, p in param_optimizer if not any(nd in n for nd in no_decay)], "weight_decay_rate": 0.01},
+        {"params": [p for n, p in param_optimizer if any(nd in n for nd in no_decay)], "weight_decay_rate": 0.0},
+    ]
+
+    optimizer = AdamW(optimizer_grouped_parameters, lr=3e-5, eps=1e-8)
+    epochs = 3
+    max_grad_norm = 1.0
+    training_steps = len(train_dataloader) * epochs
+
+    scheduler = get_linear_schedule_with_warmup(optimizer, 0, training_steps)
+    device = torch.device("mps")
+    train_loss = []
+    val_loss = []
+
+    model.to(device)
+
+    for _ in range(epochs):
+        model.train()
+        total_loss = 0
+
+        for step, batch in enumerate(train_dataloader):
+            batch = tuple(t.to(device) for t in batch)
+            X, mask, y_coarse, y_fine = batch
+            model.zero_grad()
+
+            outputs = model(X, mask, labels={"coarse": y_coarse, "fine": y_fine})
+
+            outputs.loss.backward()
+            total_loss += outputs.loss.item()
+
+            optimizer.step()
+            scheduler.step()
+            # Calculate the average loss over the training data.
+
+        avg_train_loss = total_loss / len(train_dataloader)
+        print("Average train loss: {}".format(avg_train_loss))
+
+        train_loss.append(avg_train_loss)
+
+        # validation
+        model.eval()
+        eval_loss, eval_accuracy = 0, 0
+        nb_eval_steps, nb_eval_examples = 0, 0
+        predictions, labels, label_ids = {"coarse": [], "fine": []}, {"coarse": [], "fine": []}, {"coarse": [], "fine": []}
+        for batch in val_dataloader:
+            batch = tuple(t.to(device) for t in batch)
+            X, mask, y_coarse, y_fine = batch
+            batch_labels = {"coarse": y_coarse, "fine": y_fine}
+            with torch.no_grad():
+                outputs = model(X, mask, labels={"coarse": y_coarse, "fine": y_fine})
+            # Move logits and labels to CPU
+            for label_type in ["coarse", "fine"]:
+                labels[label_type].extend(batch_labels[label_type].detach().cpu().numpy())
+                predictions[label_type].extend(
+                    [list(p) for p in np.argmax(outputs.logits[label_type].detach().cpu().numpy(), axis=2)]
+                )
+            eval_loss += outputs.loss.mean().item()
+
+        eval_loss = eval_loss / len(val_dataloader)
+        val_loss.append(eval_loss)
+        print("Validation loss: {}".format(eval_loss))
+        pred_tags = [tag_values[p_i] for p, l in zip(predictions, labels) for p_i, l_i in zip(p, l) if tag_values[l_i] != "PAD"]
+        valid_tags = [tag_values[l_i] for l in labels for l_i in l if tag_values[l_i] != "PAD"]
+        print("Validation Accuracy: {}".format(accuracy_score(pred_tags, valid_tags)))
+        print("Validation F1-Score: {}".format(f1_score(pred_tags, valid_tags)))
