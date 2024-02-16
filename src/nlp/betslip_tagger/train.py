@@ -37,12 +37,14 @@ if __name__ == "__main__":
         data = json.loads(f.read())
 
     tag2idx = {}
+    idx2tag = {}
     for tag_type in ["coarse", "fine"]:
-        tag2idx[tag_type] = {
-            tag: ind
-            for ind, tag in enumerate(data_config.ner_labels.keys())
-            if data_config.ner_labels[tag]["type"] in ["default", tag_type]
-        }
+        tag2idx[tag_type] = {}
+        idx2tag[tag_type] = {}
+        for ind, tag in enumerate(data_config.ner_labels.keys()):
+            if data_config.ner_labels[tag]["type"] in ["default", tag_type]:
+                tag2idx[tag_type][tag] = ind
+                idx2tag[tag_type][ind] = tag
 
     model = BetBERT.from_pretrained(
         "bert-base-cased", num_labels_coarse=5, num_labels_fine=10, output_attentions=False, output_hidden_states=False
@@ -145,7 +147,12 @@ if __name__ == "__main__":
         eval_loss = eval_loss / len(val_dataloader)
         val_loss.append(eval_loss)
         print("Validation loss: {}".format(eval_loss))
-        pred_tags = [tag_values[p_i] for p, l in zip(predictions, labels) for p_i, l_i in zip(p, l) if tag_values[l_i] != "PAD"]
-        valid_tags = [tag_values[l_i] for l in labels for l_i in l if tag_values[l_i] != "PAD"]
+        pred_tags = [
+            idx2tag["coarse"][p_i]
+            for p, l in zip(predictions, labels["coarse"])
+            for p_i, l_i in zip(p, l)
+            if idx2tag["coarse"][l_i] != "PAD"
+        ]
+        valid_tags = [idx2tag["coarse"][l_i] for l in labels["coarse"] for l_i in l if idx2tag[l_i] != "PAD"]
         print("Validation Accuracy: {}".format(accuracy_score(pred_tags, valid_tags)))
         print("Validation F1-Score: {}".format(f1_score(pred_tags, valid_tags)))

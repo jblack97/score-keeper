@@ -8,10 +8,10 @@ class SyntheticBetslipMaker:
         self.bet_maker = bet_maker
 
     def generate_betslip(self):
-        num_bets = np.random.randint(0, 5)
+        num_bets = np.random.randint(0, 6)
         lines = []
         # Betslips can have irrelevant text at the top
-        for _ in range(np.random.randint(0, 5)):
+        for _ in range(np.random.randint(0, 3)):
             line = []
             for _ in range(np.random.randint(1, 3)):
                 line.append(self.bet_maker.make_component("NOISE", self.bet_maker.templates["noise"]))
