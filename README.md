@@ -1,7 +1,7 @@
 # SCORE-KEEPER
 This project aims to provide an end-to-end pipeline for validating the results of bets shown in an image of a betslip or any image containing betting information. This problem contains elements of OCR (extracting the text from screenshots of betslips), NLP (parsing the OCR output into distinct bets), and webscraping (validating the results of the bets).
 
-This is still a work in progress. The OCR solution works well for screenshots of betslips, and GPT-3.5 can solve the NLP task with only a handful examples. I am currently working on generating a synthetic dataset to train my own tagger model to remove the OpenAI dependency, the code for this can be found in **src/bet_identification/betslip_tagger**.
+This is still a work in progress. The OCR solution works well for screenshots of betslips, and GPT-3.5 can solve the NLP task with only a handful examples. I am currently working on fine-tuning a BERT NER model on a synthetic dataset I created of text from betslips, the code for this can be found in **src/bet_identification/betslip_tagger**.
 
 # Input 
 Any image containing the information from a betslip e.g. \
