@@ -21,8 +21,8 @@ class DataConfig(BaseSettings):
     }
 
     ner_labels: dict = {
-        "O": {"type": "default"},
         "PAD": {"type": "default"},
+        "O": {"type": "default"},
         "B-EVENT": {"type": "coarse"},
         "I-EVENT": {"type": "coarse"},
         "B-MARKET": {"type": "coarse"},
