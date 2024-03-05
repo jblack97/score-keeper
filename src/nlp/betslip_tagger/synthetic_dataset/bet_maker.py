@@ -12,8 +12,10 @@ class BetMaker:
         component_words = []
         for _, word in enumerate(template.split()):
             if word in self.fillers:
+                # constrained fill values
                 if word in fill_values:
                     entity = self.fillers[word].override_fill(fill_values[word])
+                # free fill values
                 else:
                     entity = self.fillers[word].fill()
                 entity_words = [NERWord(value=word) for word in entity.split()]
